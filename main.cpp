@@ -17,15 +17,15 @@ public:
 private:
     const int m_width = 800;
     const int m_height = 600;
-    GLFWwindow *window = nullptr;
-    VkInstance instance;
+    GLFWwindow *m_window = nullptr;
+    VkInstance m_instance;
 
 private:
     void initWindow() {
         glfwInit();
         glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
         glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-        window = glfwCreateWindow(m_width, m_height, "Vulkan", nullptr, nullptr);
+        m_window = glfwCreateWindow(m_width, m_height, "Vulkan", nullptr, nullptr);
     }
 
     void initVulkan() {
@@ -33,13 +33,14 @@ private:
     }
 
     void mainLoop() {
-        while (!glfwWindowShouldClose(window)) {
+        while (!glfwWindowShouldClose(m_window)) {
             glfwPollEvents();
         }
     }
 
     void cleanup() {
-        glfwDestroyWindow(window);
+        vkDestroyInstance(m_instance, nullptr);
+        glfwDestroyWindow(m_window);
         glfwTerminate();
     }
 
@@ -74,8 +75,8 @@ private:
         createInfo.enabledExtensionCount = (uint32_t) requiredExtensions.size();
         createInfo.ppEnabledExtensionNames = requiredExtensions.data();
 
-        if (vkCreateInstance(&createInfo, nullptr, &instance) != VK_SUCCESS) {
-            throw std::runtime_error("failed to create instance!");
+        if (vkCreateInstance(&createInfo, nullptr, &m_instance) != VK_SUCCESS) {
+            throw std::runtime_error("failed to create m_instance!");
         }
     }
 };
