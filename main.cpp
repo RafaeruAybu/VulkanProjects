@@ -40,6 +40,9 @@ private:
     VkInstance m_instance;
     VkDebugUtilsMessengerEXT m_debugMessenger;
     VkPhysicalDevice m_physicalDevice = VK_NULL_HANDLE;
+    VkDevice m_device;
+    VkPhysicalDeviceFeatures m_deviceFeatures{};
+    VkQueue m_graphicsQueue;
     const std::vector<const char*> m_validationLayers = {
             "VK_LAYER_KHRONOS_validation"
     };
@@ -71,6 +74,43 @@ private:
         createInstance();
         setupDebugMessenger();
         pickPhysicalDevise();
+        createLogicalDevice();
+    }
+
+    void createLogicalDevice()
+    {
+        QueueFamilyIndices indices = findQueueFamilies(m_physicalDevice);
+
+        VkDeviceQueueCreateInfo queueCreateInfo{};
+        queueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+        queueCreateInfo.queueFamilyIndex = indices.graphicsFamily.value();
+        queueCreateInfo.queueCount = 1;
+        float queuePriority = 1.0f;
+        queueCreateInfo.pQueuePriorities = &queuePriority;
+
+        VkDeviceCreateInfo createInfo{};
+        createInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
+        createInfo.pQueueCreateInfos = &queueCreateInfo;
+        createInfo.queueCreateInfoCount = 1;
+        createInfo.pEnabledFeatures = &m_deviceFeatures;
+        createInfo.enabledExtensionCount = 0;
+        if (m_enableValidationLayers) {
+            createInfo.enabledLayerCount = static_cast<uint32_t>(m_validationLayers.size());
+            createInfo.ppEnabledLayerNames = m_validationLayers.data();
+        } else {
+            createInfo.enabledLayerCount = 0;
+        }
+
+        if (vkCreateDevice(m_physicalDevice,
+                           &createInfo,
+                           nullptr,
+                           &m_device) != VK_SUCCESS) {
+            throw std::runtime_error("failed to create logical device!");
+        }
+
+        vkGetDeviceQueue(m_device,
+                         indices.graphicsFamily.value(),
+                         0, &m_graphicsQueue);
     }
 
     void pickPhysicalDevise()
@@ -169,6 +209,7 @@ private:
 
     void cleanup()
     {
+        vkDestroyDevice(m_device, nullptr);
         if (m_enableValidationLayers) {
             DestroyDebugUtilsMessengerEXT(m_instance, m_debugMessenger, nullptr);
         }
