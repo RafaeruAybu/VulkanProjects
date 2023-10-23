@@ -15,5 +15,5 @@ link_directories(
 )
 
 
-add_executable(Vulkan_pipeline main.cpp)
+add_executable(Vulkan_pipeline main.cpp HelloTriangleApplication.hpp HelloTriangleApplication.cpp)
 target_link_libraries(Vulkan_pipeline glfw ${GLFW_LIBRARIES} Vulkan::Vulkan)
