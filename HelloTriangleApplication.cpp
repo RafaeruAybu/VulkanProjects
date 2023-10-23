@@ -69,8 +69,9 @@ void HelloTriangleApplication::createLogicalDevice()
     createInfo.pQueueCreateInfos = queueCreateInfos.data();
 
     createInfo.pEnabledFeatures = &deviceFeatures;
-
-    createInfo.enabledExtensionCount = 0;
+    std::vector<const char*> exts = {"VK_KHR_portability_subset"};
+    createInfo.ppEnabledExtensionNames = exts.data();
+    createInfo.enabledExtensionCount = 1;
 
     if (m_enableValidationLayers) {
         createInfo.enabledLayerCount = static_cast<uint32_t>(m_validationLayers.size());
@@ -277,7 +278,9 @@ void HelloTriangleApplication::createSurface() {
     if (m_enableValidationLayers) {
         extensions.push_back(VK_EXT_DEBUG_UTILS_EXTENSION_NAME);
     }
+    //MoltenVK (Apple m1) portability
     extensions.push_back(VK_KHR_PORTABILITY_ENUMERATION_EXTENSION_NAME);
+    extensions.push_back(VK_KHR_GET_PHYSICAL_DEVICE_PROPERTIES_2_EXTENSION_NAME);
     return extensions;
 }
 
