@@ -13,13 +13,15 @@
 #include <vector>
 #include <cstring>
 #include <optional>
+#include <set>
 
 struct QueueFamilyIndices
 {
     std::optional<uint32_t> graphicsFamily;
+    std::optional<uint32_t> presentFamily;
     bool isComplete()
     {
-        return graphicsFamily.has_value();
+        return graphicsFamily.has_value() && presentFamily.has_value();
     }
 };
 
@@ -38,6 +40,8 @@ private:
     VkDevice m_device;
     VkPhysicalDeviceFeatures m_deviceFeatures{};
     VkQueue m_graphicsQueue;
+    VkSurfaceKHR m_surface;
+    VkQueue m_presentQueue;
 
     const std::vector<const char*> m_validationLayers = {
             "VK_LAYER_KHRONOS_validation"
@@ -65,6 +69,7 @@ private:
     void cleanup();
     void createInstance();
     bool checkValidationLayerSupport();
+    void createSurface();
     [[nodiscard]] std::vector<const char*> getRequiredExtension() const;
     static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
             VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
