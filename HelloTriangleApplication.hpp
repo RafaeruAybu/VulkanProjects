@@ -25,6 +25,13 @@ struct QueueFamilyIndices
     }
 };
 
+struct SwapChainSupportDetails
+{
+    VkSurfaceCapabilitiesKHR capabilities;
+    std::vector<VkSurfaceFormatKHR> formats;
+    std::vector<VkPresentModeKHR> presentModes;
+};
+
 class HelloTriangleApplication
 {
 public:
@@ -42,9 +49,19 @@ private:
     VkQueue m_graphicsQueue;
     VkSurfaceKHR m_surface;
     VkQueue m_presentQueue;
+    VkSwapchainKHR m_swapChain;
+    std::vector<VkImage> m_swapChainImages;
+
+    VkFormat swapChainImageFormat;
+    VkExtent2D swapChainExtent;
+
 
     const std::vector<const char*> m_validationLayers = {
             "VK_LAYER_KHRONOS_validation"
+    };
+    const std::vector<const char*> deviceExtensions = {
+            VK_KHR_SWAPCHAIN_EXTENSION_NAME,
+            "VK_KHR_portability_subset"
     };
 
 #ifdef NDEBUG
@@ -58,6 +75,7 @@ private:
     void initVulkan();
     void createLogicalDevice();
     void pickPhysicalDevise();
+    bool checkDeviceExtensionSupport(VkPhysicalDevice device);
     bool isDeviceSuitable(VkPhysicalDevice device);
     QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
     void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo);
@@ -69,6 +87,11 @@ private:
     void cleanup();
     void createInstance();
     bool checkValidationLayerSupport();
+    SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device);
+    VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
+    VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
+    VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
+    void createSwapChain();
     void createSurface();
     [[nodiscard]] std::vector<const char*> getRequiredExtension() const;
     static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
@@ -77,6 +100,5 @@ private:
             const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
             void* pUserData);
 };
-
 
 #endif //VULKAN_PIPELINE_HELLOTRIANGLEAPPLICATION_HPP
