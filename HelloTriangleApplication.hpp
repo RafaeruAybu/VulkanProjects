@@ -52,8 +52,10 @@ private:
     VkSwapchainKHR m_swapChain;
     std::vector<VkImage> m_swapChainImages;
 
-    VkFormat swapChainImageFormat;
-    VkExtent2D swapChainExtent;
+    VkFormat m_swapChainImageFormat;
+    VkExtent2D m_swapChainExtent;
+
+    std::vector<VkImageView> m_swapChainImageViews;
 
 
     const std::vector<const char*> m_validationLayers = {
@@ -73,6 +75,7 @@ private:
 private:
     void initWindow();
     void initVulkan();
+    void createImageViews();
     void createLogicalDevice();
     void pickPhysicalDevise();
     bool checkDeviceExtensionSupport(VkPhysicalDevice device);
