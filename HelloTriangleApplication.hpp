@@ -75,6 +75,8 @@ private:
 private:
     void initWindow();
     void initVulkan();
+    void createGraphicsPipeline();
+    VkShaderModule createShaderModule(const std::vector<char>& code);
     void createImageViews();
     void createLogicalDevice();
     void pickPhysicalDevise();
