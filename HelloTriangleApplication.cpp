@@ -78,6 +78,7 @@ void HelloTriangleApplication::initVulkan()
     pickPhysicalDevise();
     createLogicalDevice();
     createSwapChain();
+    createImageViews();
     createGraphicsPipeline();
 }
 
