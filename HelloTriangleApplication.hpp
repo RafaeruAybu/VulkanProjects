@@ -34,9 +34,6 @@ struct SwapChainSupportDetails
 
 class HelloTriangleApplication
 {
-public:
-    void run();
-
 private:
     const int m_width = 800;
     const int m_height = 600;
@@ -51,6 +48,8 @@ private:
     VkQueue m_presentQueue;
     VkSwapchainKHR m_swapChain;
     std::vector<VkImage> m_swapChainImages;
+    VkPipelineLayout m_pipelineLayout;
+
 
     VkFormat m_swapChainImageFormat;
     VkExtent2D m_swapChainExtent;
@@ -71,6 +70,9 @@ private:
 #else
     const bool m_enableValidationLayers = true;
 #endif
+
+public:
+    void run();
 
 private:
     void initWindow();
