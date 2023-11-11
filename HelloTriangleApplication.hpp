@@ -48,6 +48,7 @@ private:
     VkQueue m_presentQueue;
     VkSwapchainKHR m_swapChain;
     std::vector<VkImage> m_swapChainImages;
+    VkRenderPass m_renderPass;
     VkPipelineLayout m_pipelineLayout;
 
 
@@ -60,7 +61,7 @@ private:
     const std::vector<const char*> m_validationLayers = {
             "VK_LAYER_KHRONOS_validation"
     };
-    const std::vector<const char*> deviceExtensions = {
+    const std::vector<const char*> m_deviceExtensions = {
             VK_KHR_SWAPCHAIN_EXTENSION_NAME,
             "VK_KHR_portability_subset"
     };
@@ -100,6 +101,7 @@ private:
     VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
     void createSwapChain();
     void createSurface();
+    void createRenderPass();
     [[nodiscard]] std::vector<const char*> getRequiredExtension() const;
     static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
             VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
