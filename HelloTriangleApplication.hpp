@@ -52,6 +52,8 @@ private:
     VkPipelineLayout m_pipelineLayout;
     VkPipeline m_graphicsPipeline;
 
+    VkCommandPool m_commandPool;
+    VkCommandBuffer m_commandBuffer;
 
     VkFormat m_swapChainImageFormat;
     VkExtent2D m_swapChainExtent;
@@ -104,6 +106,9 @@ private:
     void createFramebuffers();
     void createSurface();
     void createRenderPass();
+    void createCommandPool();
+    void createCommandBuffer();
+    void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex);
     [[nodiscard]] std::vector<const char*> getRequiredExtension() const;
     static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
             VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
