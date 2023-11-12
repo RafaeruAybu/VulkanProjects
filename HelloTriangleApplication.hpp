@@ -58,6 +58,10 @@ private:
     VkFormat m_swapChainImageFormat;
     VkExtent2D m_swapChainExtent;
 
+    VkSemaphore m_imageAvailableSemaphore;
+    VkSemaphore m_renderFinishedSemaphore;
+    VkFence m_inFlightFence;
+
     std::vector<VkImageView> m_swapChainImageViews;
     std::vector<VkFramebuffer> m_swapChainFramebuffers;
 
@@ -95,6 +99,7 @@ private:
                                        VkDebugUtilsMessengerEXT debugMessenger,
                                        const VkAllocationCallbacks* pAllocator);
     void mainLoop();
+    void drawFrame();
     void cleanup();
     void createInstance();
     bool checkValidationLayerSupport();
@@ -109,6 +114,8 @@ private:
     void createCommandPool();
     void createCommandBuffer();
     void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex);
+    void createSyncObjects();
+    void destroySyncObjects();
     [[nodiscard]] std::vector<const char*> getRequiredExtension() const;
     static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
             VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
