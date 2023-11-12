@@ -57,7 +57,7 @@ private:
     VkExtent2D m_swapChainExtent;
 
     std::vector<VkImageView> m_swapChainImageViews;
-
+    std::vector<VkFramebuffer> m_swapChainFramebuffers;
 
     const std::vector<const char*> m_validationLayers = {
             "VK_LAYER_KHRONOS_validation"
@@ -101,6 +101,7 @@ private:
     VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
     VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
     void createSwapChain();
+    void createFramebuffers();
     void createSurface();
     void createRenderPass();
     [[nodiscard]] std::vector<const char*> getRequiredExtension() const;
