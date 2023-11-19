@@ -37,6 +37,8 @@ class HelloTriangleApplication
 private:
     const int m_width = 800;
     const int m_height = 600;
+    const int MAX_FRAMES_IN_FLIGHT = 2;
+    uint32_t m_currentFrame = 0;
     GLFWwindow *m_window = nullptr;
     VkInstance m_instance;
     VkDebugUtilsMessengerEXT m_debugMessenger;
@@ -53,14 +55,16 @@ private:
     VkPipeline m_graphicsPipeline;
 
     VkCommandPool m_commandPool;
-    VkCommandBuffer m_commandBuffer;
+    std::vector<VkCommandBuffer> m_commandBuffers;
 
     VkFormat m_swapChainImageFormat;
     VkExtent2D m_swapChainExtent;
 
-    VkSemaphore m_imageAvailableSemaphore;
-    VkSemaphore m_renderFinishedSemaphore;
-    VkFence m_inFlightFence;
+    std::vector<VkSemaphore> m_imageAvailableSemaphores;
+    std::vector<VkSemaphore> m_renderFinishedSemaphores;
+    std::vector<VkFence> m_inFlightFences;
+
+    bool m_framebufferResized = false;
 
     std::vector<VkImageView> m_swapChainImageViews;
     std::vector<VkFramebuffer> m_swapChainFramebuffers;
@@ -116,6 +120,9 @@ private:
     void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex);
     void createSyncObjects();
     void destroySyncObjects();
+    void recreateSwapChain();
+    void cleanupSwapChain();
+    static void framebufferResizeCallback(GLFWwindow* window, int width, int height);
     [[nodiscard]] std::vector<const char*> getRequiredExtension() const;
     static VKAPI_ATTR VkBool32 VKAPI_CALL debugCallback(
             VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
