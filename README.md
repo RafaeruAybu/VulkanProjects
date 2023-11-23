@@ -1,5 +1,9 @@
 # VulkanProjects
+## Description
 Contains all Vulkan projects in it.
+
+First_vulkan_app tag v0.0.1:
+![Alt text](attachments/hello_triangle.png?raw=true "Hello triangle")
 
 Resources:
 1. https://vulkan-tutorial.com/Introduction
