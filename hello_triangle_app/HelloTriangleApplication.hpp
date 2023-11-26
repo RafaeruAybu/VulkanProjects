@@ -49,10 +49,11 @@ struct Vertex {
 struct QueueFamilyIndices
 {
     std::optional<uint32_t> graphicsFamily;
+    std::optional<uint32_t> transferFamily;
     std::optional<uint32_t> presentFamily;
     bool isComplete()
     {
-        return graphicsFamily.has_value() && presentFamily.has_value();
+        return graphicsFamily.has_value() && presentFamily.has_value() && transferFamily.has_value();
     }
 };
 
@@ -77,6 +78,7 @@ private:
     VkDevice m_device;
     VkPhysicalDeviceFeatures m_deviceFeatures{};
     VkQueue m_graphicsQueue;
+    VkQueue m_transferQueue;
     VkSurfaceKHR m_surface;
     VkQueue m_presentQueue;
     VkSwapchainKHR m_swapChain;
@@ -86,6 +88,7 @@ private:
     VkPipeline m_graphicsPipeline;
 
     VkCommandPool m_commandPool;
+    VkCommandPool m_transferCommandPool;
     std::vector<VkCommandBuffer> m_commandBuffers;
 
     VkFormat m_swapChainImageFormat;
@@ -162,6 +165,9 @@ private:
     void createCommandBuffer();
     void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex);
     void createSyncObjects();
+    void createBuffer(VkDeviceSize size, VkBufferUsageFlags usage,
+                      VkMemoryPropertyFlags properties, VkBuffer& buffer, VkDeviceMemory& bufferMemory);
+    void copyBuffer(VkBuffer srcBuffer, VkBuffer dstBuffer, VkDeviceSize size);
     void destroySyncObjects();
     void recreateSwapChain();
     void cleanupSwapChain();
