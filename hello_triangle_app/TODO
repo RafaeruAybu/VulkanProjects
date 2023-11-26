@@ -5,3 +5,4 @@ Try to make some visual shaders. Take examples from shadertoy.com.
 Download and show 3D Model.
 Write shader code to wave object vertecies.
 Fix Cmake file pathes to the lib.
+Always add VK_LOADER_DEBUG=all to env.

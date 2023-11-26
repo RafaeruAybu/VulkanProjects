@@ -1,0 +1,4 @@
+.idea/
+cmake-build-debug/
+hello_triangle_app/shaders/vert.spv
+hello_triangle_app/shaders/frag.spv
