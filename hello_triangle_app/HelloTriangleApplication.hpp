@@ -84,6 +84,9 @@ private:
     VkSwapchainKHR m_swapChain;
     std::vector<VkImage> m_swapChainImages;
     VkRenderPass m_renderPass;
+    VkDescriptorSetLayout m_descriptorSetLayout;
+    VkDescriptorPool m_descriptorPool;
+    std::vector<VkDescriptorSet> m_descriptorSets;
     VkPipelineLayout m_pipelineLayout;
     VkPipeline m_graphicsPipeline;
 
@@ -108,6 +111,10 @@ private:
     VkBuffer m_indexBuffer;
     VkDeviceMemory m_indexBufferMemory;
 
+    std::vector<VkBuffer> m_uniformBuffers;
+    std::vector<VkDeviceMemory> m_uniformBuffersMemory;
+    std::vector<void*> m_uniformBuffersMapped;
+
     const std::vector<Vertex> m_vertices = {
             {{-0.5f, -0.5f}, {1.0f, 0.0f, 0.0f}},
             {{0.5f, -0.5f}, {0.0f, 1.0f, 0.0f}},
@@ -117,6 +124,12 @@ private:
 
     const std::vector<uint16_t> m_indices = {
             0, 1, 2, 2, 3, 0
+    };
+
+    struct m_uniformBufferObject {
+        alignas(16) glm::mat4 model;
+        alignas(16) glm::mat4 view;
+        alignas(16) glm::mat4 proj;
     };
 
     const std::vector<const char*> m_validationLayers = {
@@ -141,6 +154,12 @@ private:
     void initWindow();
     void initVulkan();
     void createGraphicsPipeline();
+    void createDescriptorSetLayout();
+    void createUniformBuffers();
+    void cleanUniformBuffers();
+    void updateUniformBuffer(uint32_t currentImage);
+    void createDescriptorPool();
+    void createDescriptorSets();
     VkShaderModule createShaderModule(const std::vector<char>& code);
     void createImageViews();
     void createLogicalDevice();
